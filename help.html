@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if IE 9 ]>    <html lang="en" class="no-js ie9"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+
+	<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+	     Remove this if you use the .htaccess -->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<title>Is this email address valid?</title>
+	<meta name="description" content="A service to determine whether an email address is valid">
+	<meta name="author" content="Dominic Sayers">
+
+	<!--  Mobile viewport optimized: j.mp/bplateviewport -->
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<script src="/cdn-cgi/apps/head/RQD9Cw64GFLfczWtdX3N9syPDbM.js"></script><link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon.png">
+	<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+	<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+	<link rel="manifest" href="/manifest.json">
+	<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#400300">
+	<meta name="theme-color" content="#ffffff">
+
+	<!-- CSS : implied media="all" -->
+	<link rel="stylesheet" href="/css/isemail.info.css?v2">
+
+	<!-- All JavaScript at the bottom, except for Modernizr which enables HTML5 elements & feature detects -->
+	<script src="/js/libs/modernizr-3.3.1.min.js"></script>
+</head>
+
+<body>
+	<div id="site" class="vbox">
+		<header class="banner hbox toppad">
+			<div id="logo" class="leftcol"><a href="/"><img src="/logo.png" /></a></div>
+			<h1 class="boxFlex">Email address validation</h1>
+			<div class="vbox">
+				<div class="boxFlex">&nbsp;</div>
+				<menu id="sitenav" class="hbox">
+					<li><a href="/">Home</a></li>
+					<li><a href="https://github.com/dominicsayers/isemail/archive/master.zip">Download</a></li>
+					<li><a href="https://blog.dominicsayers.com" target="_blank">Blog</a></li>
+					<li><a href="/help">Help</a></li>
+					<li><a href="/about">About</a></li>
+					<li><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="5E3PPJVR2VE3G">
+<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+<img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form></li>
+
+				</menu>
+			</div>
+		</header>
+
+		<div id="app" class="boxFlex">
+			<div class="constrained_width"> <!-- Mozilla needs inner div or else the whole page goes narrow -->
+			<article>
+				<section>
+					<h1>What does this do?</h1>
+					<p>This web service tests any email address to see if it complies with the standards set out in the internet RFCs.</p>
+					<p><strong>It doesn't check if a particular address actually exists - you can only do that by trying to send an email to it.</strong></p>
+					<p>If you want to know more about email address validation, read <a href="/about">the About page</a></p>
+				</section>
+				<section>
+					<h1>How to use the email address validation service</h1>
+					<p>The email address validation service has a REST API. The validation results can be returned as semantic HTML, JSON, JSONP or XML.</p>
+					<p>In general you would validate an email address like this:
+					<strong><code>https://isemail.info/&lt;method&gt;/&lt;address&gt;</code></strong>
+					where <code>&lt;method&gt;</code> is one of the methods described below and
+					<code>&lt;address&gt;</code> is the address you want to validate.</p>
+				</section>
+				<section>
+					<h2>Default method</h2>
+					<p>If you just use <code>https://isemail.info/&lt;address&gt;</code> then the validator
+					will return information about <code>&lt;address&gt;</code> in the default HTML format.</p>
+					<p>There are some reserved words you can't test like this, for instance
+					<code>https://isemail.info/help</code> and <code>https://isemail.info/about</code> and all
+					the methods documented below.</p>
+				</section>
+				<section>
+					<h2>Putting an email address into a URL</h2>
+					<p>Note the address must be URL-encoded if it contains characters that have
+					a special meaning in a URL. In other words, if you try to validate
+					<code>a#<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="acceeccf82cfc3c1">[email&#160;protected]</a></code> then the <code>#</code> and everything after it will not be forwarded to the server (try it).</p>
+					<p>The way to avoid this is to use appropriate URL entities where necessary.
+					The address above can be validated by putting <code>a%<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="192b2a7b597a377a7674">[email&#160;protected]</a></code> into the URL.</p>
+					<p>If you type an address into the text box then the URL-encoding will be done for you.</p>
+				</section>
+				<section>
+					<h2>Methods</h2>
+					<p>Here are the methods you can use</p>
+					<dl id="methods">
+						<dt>json</dt>
+						<dd>e.g. <code>https://isemail.info/json/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f88c9d8b8cb89d80999588949dd69b9795">[email&#160;protected]</a></code></dd>
+						<dd>Returns comprehensive information about <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3f4b5a4c4b7f5a475e524f535a115c5052">[email&#160;protected]</a></code> as JSON data.</dd>
+						<dt>jsonp=callback</dt>
+						<dd>e.g. <code>https://isemail.info/jsonp=myFunction/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="780c1d0b0c381d00191508141d561b1715">[email&#160;protected]</a></code></dd>
+						<dd>Returns a valid line of Javascript calling the function <code>myFunction</code> with comprehensive information about <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3c48594f487c59445d514c5059125f5351">[email&#160;protected]</a></code>.</dd>
+						<dt>xml</dt>
+						<dd>e.g. <code>https://isemail.info/xml/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="a3d7c6d0d7e3c6dbc2ced3cfc68dc0ccce">[email&#160;protected]</a></code></dd>
+						<dd>Returns comprehensive information about <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c4b0a1b7b084a1bca5a9b4a8a1eaa7aba9">[email&#160;protected]</a></code> as XML data.</dd>
+						<dt>html</dt>
+						<dd>e.g. <code>https://isemail.info/html/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6a1e0f191e2a0f120b071a060f44090507">[email&#160;protected]</a></code></dd>
+						<dd>Returns comprehensive information about <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="473322343307223f262a372b226924282a">[email&#160;protected]</a></code> in HTML format (this is the default).</dd>
+						<dt>basic</dt>
+						<dd>e.g. <code>https://isemail.info/basic/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="8ffbeafcfbcfeaf7eee2ffe3eaa1ece0e2">[email&#160;protected]</a></code></dd>
+						<dd>Returns brief, basic information about <code><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="453120363105203d24283529206b262a28">[email&#160;protected]</a></code> as an HTML fragment.</dd>
+						<dt>valid</dt>
+						<dd>e.g. <code>https://isemail.info/valid/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2054455354604558414d504c450e434f4d">[email&#160;protected]</a></code></dd>
+						<dd>Returns 1 for a valid <a href="https://tools.ietf.org/html/rfc5321#section-4.1.2">RFC 5321 Mailbox</a>, 0 otherwise.</dd>
+						<dt>diagnosis</dt>
+						<dd>e.g. <code>https://isemail.info/diagnosis/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="84f0e1f7f0c4e1fce5e9f4e8e1aae7ebe9">[email&#160;protected]</a></code></dd>
+						<dd>Returns the specific diagnostic text for this address.</dd>
+						<dt>category</dt>
+						<dd>e.g. <code>https://isemail.info/category/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f286978186b2978a939f829e97dc919d9f">[email&#160;protected]</a></code></dd>
+						<dd>Returns the general diagnostic category for this address.</dd>
+						<dt>numeric</dt>
+						<dd>e.g. <code>https://isemail.info/numeric/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="671302141327021f060a170b024904080a">[email&#160;protected]</a></code></dd>
+						<dd>Returns the specific diagnosis for this address as an integer.</dd>
+						<dt>constant</dt>
+						<dd>e.g. <code>https://isemail.info/constant/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="b0c4d5c3c4f0d5c8d1ddc0dcd59ed3dfdd">[email&#160;protected]</a></code></dd>
+						<dd>Returns the specific diagnosis for this address as a constant name.</dd>
+						<dt>categoryconstant</dt>
+						<dd>e.g. <code>https://isemail.info/categoryconstant/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="651100161125001d04081509004b060a08">[email&#160;protected]</a></code></dd>
+						<dd>Returns the general diagnostic category for this address as a constant name.</dd>
+						<dt>smtp</dt>
+						<dd>e.g. <code>https://isemail.info/smtp/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f5b4a5c5b6f4a574e425f434a014c4042">[email&#160;protected]</a></code></dd>
+						<dd>Returns the likely SMTP extended return code for this address as text.</dd>
+						<dt>reference</dt>
+						<dd>e.g. <code>https://isemail.info/reference/<a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="1d69786e695d78657c706d7178337e7270">[email&#160;protected]</a></code></dd>
+						<dd>Returns any relevant passages from the RFCs that help to support the diagnosis for this address.</dd>
+					</dl>
+				</section>
+				<section>
+					<h2>Behaviour note</h2>
+					<p>What if you are testing an address that is the same as a method name? Here's what happens:</p>
+					<p><code>https://isemail.info/&lt;method&gt;</code> tests <code>&lt;method&gt;</code> as if it was an address.</p>
+					<p><code>https://isemail.info/&lt;method&gt;/</code> (note the trailing slash) tests the empty string and returns the results in the format specified by <code>&lt;method&gt;</code>.</p>
+				</section>
+			</article>				<div class="form">
+					<form method="post" action="/index.php" class="hbox">
+						<p><label>Email address: <input name="address" size="64" value="" /></label></p>
+						<p><button type="submit">Test</button></p>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<div id="comments"> <!-- Mozilla needs inner div or else the whole page goes narrow -->
+			<div id="disqus_thread"></div>
+		</div>
+
+		<footer class="banner">
+			<menu>
+				<li><a href="https://github.com/dominicsayers/isemail/archive/master.zip">Download</a></li>
+				<li><a href="https://blog.dominicsayers.com" target="_blank">Blog</a></li>
+				<li><a href="/help">Help</a></li>
+				<li><a href="/about">About</a></li>
+				<li><a href="https://tools.ietf.org/html/rfc5321" target="_blank">RFC 5321</a></li>
+				<li><a href="https://tools.ietf.org/html/rfc5322" target="_blank">RFC 5322</a></li>
+				<li><a href="https://tools.ietf.org/html/rfc5336" target="_blank">RFC 5336</a></li>
+				<li><a href="https://tools.ietf.org/html/rfc5952" target="_blank">RFC 5952</a></li>
+				<li><a href="https://tools.ietf.org/html/rfc4291" target="_blank">RFC 4291</a></li>
+				<li><a href="https://tools.ietf.org/html/rfc1123" target="_blank">RFC 1123</a></li>
+				<li>&copy; 2016 <a href="https://dominicsayers.com" target="_blank">Dominic Sayers</a></li>
+				<li>Powered by <a href="https://github.com/dominicsayers/isemail" target="_blank">is_email()</a></li>
+				<li><form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+<input type="hidden" name="cmd" value="_s-xclick">
+<input type="hidden" name="hosted_button_id" value="5E3PPJVR2VE3G">
+<input type="image" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online.">
+<img alt="" border="0" src="https://www.paypalobjects.com/WEBSCR-640-20110429-1/en_GB/i/scr/pixel.gif" width="1" height="1">
+</form></li>
+			</menu>
+		</footer>
+	</div> <!--! end of #site -->
+
+	<!-- Javascript at the bottom for fast page loading -->
+	<!-- Grab Google CDN's jQuery. fall back to local if necessary -->
+	<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js"></script>
+	<script>!window.jQuery && document.write(unescape('%3Cscript src="/js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
+
+	<!-- scripts concatenated and minified via ant build script-->
+	<script src="/js/plugins.js"></script>
+	<script src="/js/script.js"></script>
+	<!-- end concatenated and minified scripts-->
+
+	<!-- Disqus -->
+	<script>
+		var disqus_config = function () {
+			this.page.url = 'https://isemail.info';
+			this.page.identifier = 'isemail.info';
+		};
+
+		(function() { // DON'T EDIT BELOW THIS LINE
+		var d = document, s = d.createElement('script');
+		s.src = '//isemail-info.disqus.com/embed.js';
+		s.setAttribute('data-timestamp', +new Date());
+		(d.head || d.body).appendChild(s);
+		})();
+	</script>
+	<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+	<!-- asynchronous google analytics: mathiasbynens.be/notes/async-analytics-snippet
+	     change the UA-XXXXX-X to be your site's ID -->
+	<script>
+		var _gaq = [['_setAccount', 'UA-23828714-1'], ['_trackPageview']];
+
+		(function(d, t) {
+			var	g = d.createElement(t),
+				s = d.getElementsByTagName(t)[0];
+				g.async = true;
+
+			g.src = ('https:' == location.protocol ? 'https://ssl' : 'https://www') + '.google-analytics.com/ga.js';
+			s.parentNode.insertBefore(g, s);
+		})(document, 'script');
+	</script>
+</body>
+</html>
